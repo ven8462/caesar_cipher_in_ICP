@@ -1,0 +1,13 @@
+{
+    "canisters": {
+        "caesar_cipher": {
+            "type": "custom",
+            "main": "src/index.ts",
+            "candid": "src/index.did",
+            "build": "npx azle caesar_cipher",
+            "wasm": ".azle/caesar_cipher/caesar_cipher.wasm",
+            "gzip": true
+        }
+    }
+}
+
