@@ -1,19 +1,26 @@
-// src/index.ts
-
 import { Canister, query, text } from 'azle';
 import * as cipher from './cipher';
 
-export default Canister({
+const CaesarCipher = Canister({
   // Custom Caesar Cipher functions
 
   // calling the encrypt function
   Encrypt : query([text, text], text, (text, shift) => {
-    return cipher.encryptCaesar(text, parseInt(shift));
+    const shiftInt = parseInt(shift);
+    if (isNaN(shiftInt)) {
+      throw new Error('Shift parameter must be a valid integer');
+    }
+    return cipher.encryptCaesar(text, shiftInt);
   }),
-
 
   // calling the decrypt function
   Decrypt: query([text, text], text, (text, shift) => {
-    return cipher.decryptCaesar(text, parseInt(shift));
+    const shiftInt = parseInt(shift);
+    if (isNaN(shiftInt)) {
+      throw new Error('Shift parameter must be a valid integer');
+    }
+    return cipher.decryptCaesar(text, shiftInt);
   }),
 });
+
+export default CaesarCipher;
