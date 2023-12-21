@@ -9,7 +9,7 @@ export function encryptCaesar(text: string, shift: number): string {
     if (/[a-zA-Z]/.test(char)) {
       const isUpperCase = char === char.toUpperCase();
       const offset = isUpperCase ? 65 : 97;
-      const encryptedChar = String.fromCharCode((char.charCodeAt(0) - offset + shift) % 26 + offset);
+      const encryptedChar = String.fromCharCode((char.charCodeAt(0) + shift - offset) % 26 + offset);
       result += isUpperCase ? encryptedChar : encryptedChar.toLowerCase();
     } else {
       // If the character is not a letter, leave it unchanged
@@ -21,6 +21,7 @@ export function encryptCaesar(text: string, shift: number): string {
 
 // Function to decrypt a given text using the Caesar Cipher
 export function decryptCaesar(text: string, shift: number): string {
-  // To decrypt, we use a negative shift
-  return encryptCaesar(text, -shift);
+  // To decrypt, we substract the total number of alphabets(26) with the shift argument
+  // and call the encryptCaesar function with the new value
+  return encryptCaesar(text, 26 - shift);
 }

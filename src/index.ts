@@ -1,25 +1,23 @@
-import { Canister, query, text } from 'azle';
+import { Canister, query, text, Result, Ok, Err, nat8 } from 'azle';
 import * as cipher from './cipher';
 
 const CaesarCipher = Canister({
   // Custom Caesar Cipher functions
 
   // calling the encrypt function
-  Encrypt : query([text, text], text, (text, shift) => {
-    const shiftInt = parseInt(shift);
-    if (isNaN(shiftInt)) {
-      throw new Error('Shift parameter must be a valid integer');
+  Encrypt : query([text, nat8], Result(text, text), (text, shift) => {
+    if (shift == 0 || shift > 25) {
+      return Err('Shift arugment must be between 1 and 25');
     }
-    return cipher.encryptCaesar(text, shiftInt);
+    return Ok(cipher.encryptCaesar(text, shift));
   }),
 
   // calling the decrypt function
-  Decrypt: query([text, text], text, (text, shift) => {
-    const shiftInt = parseInt(shift);
-    if (isNaN(shiftInt)) {
-      throw new Error('Shift parameter must be a valid integer');
+  Decrypt: query([text, nat8], Result(text, text), (text, shift) => {
+    if (shift == 0 || shift > 25) {
+      return Err('Shift arugment must be between 1 and 25');
     }
-    return cipher.decryptCaesar(text, shiftInt);
+    return Ok(cipher.decryptCaesar(text, shift));
   }),
 });
 
